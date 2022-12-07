@@ -9,7 +9,7 @@ try {
 
   const championsTable = $('table.article-table')
 
-  const champions: Array<any> = []
+  const champions: Array<unknown> = []
   $('tbody tr', championsTable).each((_i, element) => {
     champions.push({
       name: $(element).find('td').attr('data-sort-value'),
