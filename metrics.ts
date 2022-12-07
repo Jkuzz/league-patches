@@ -1,6 +1,6 @@
 const patches = JSON.parse(await Deno.readTextFile('./patches.json'))
 
-interface PatchedChampion {
+interface MetricsChampion {
   name: number
   class: string
   href: string
@@ -8,9 +8,10 @@ interface PatchedChampion {
   blueEssence: number
   rp: number
   patchSize: number
+  patchPerDay: number
 }
 
-const champions: Array<unknown> = []
+const champions: Array<MetricsChampion> = []
 for (const champ of patches) {
   const releaseDate = Date.parse(champ.date)
   const age = Date.now() - releaseDate
@@ -19,8 +20,9 @@ for (const champ of patches) {
   champions.push({ ...champ, daysSinceRelease, patchPerDay })
 }
 
-console.log(champions)
 await Deno.writeTextFile(
   './metrics.json',
-  JSON.stringify(champions.sort((a, b) => a.patchPerDay - b.patchPerDay))
+  JSON.stringify(
+    champions.sort((a: MetricsChampion, b: MetricsChampion) => a.patchPerDay - b.patchPerDay)
+  )
 )
